@@ -3,39 +3,86 @@ package com.lykj.scm.common.utils;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.log4j.Logger;
-
 public class ValidationUtils {
 
 	private static Logger logger = Logger.getLogger(ValidationUtils.class);
 	
 	/**
-     * ÕıÔò±í´ïÊ½£ºÑéÖ¤ÊÖ»úºÅ
+     * æ­£åˆ™è¡¨è¾¾å¼ï¼šéªŒè¯æ‰‹æœºå·
      */
 	 public static final String REGEX_MOBILE = "^1\\d{10}$";
 	 
-	/**
-	 * ÑéÖ¤³µÅÆºÅ
-	 * @param vehicleNo
-	 * @return
-	 */
-	public static boolean validationVehicleNo(String vehicleNo) {
-		Pattern pattern = Pattern.compile("^[¾©½ò»¦Óå¼½Ô¥ÔÆÁÉºÚÏæÍîÂ³ĞÂËÕÕã¸Ó¶õ¹ğ¸Ê½úÃÉÉÂ¼ªÃö¹óÔÁÇà²Ø´¨ÄşÇíÊ¹ÁìA-Z]{1}[A-Z]{1}(?:(?![A-Z]{4})[A-Z0-9]){4}[A-Z0-9¹ÒÑ§¾¯¸Û°Ä]{1}$");
-		Matcher matcher = pattern.matcher(vehicleNo);
-		if (!matcher.matches()) {
-			logger.info("³µÅÆºÅ¸ñÊ½²»ÕıÈ·!");
-		return false;
-		}else{
-			logger.info("³µÅÆºÅ¸ñÊ½ÕıÈ·!");
-		return true;
-	   }
-   }
-
-	/**
-     * Ğ£ÑéÊÖ»úºÅ
+	 
+	//æ•°å­—
+    public static final String REG_NUMBER = ".*\\d+.*";
+    //å°å†™å­—æ¯
+    public static final String REG_UPPERCASE = ".*[A-Z]+.*";
+    //å¤§å†™å­—æ¯
+    public static final String REG_LOWERCASE = ".*[a-z]+.*";
+    //ç‰¹æ®Šç¬¦å·(~!@#$%^&*()_+|<>,.?/:;'[]{}\)
+    public static final String REG_SYMBOL = ".*[~!@#$%^&*()_+|<>,.?/:;'\\[\\]{}\"]+.*";
+ 
+    public static boolean checkPasswordRule(String password,String username){
+ 
+        //å¯†ç ä¸ºç©ºåŠé•¿åº¦å¤§äº8ä½å°äº30ä½åˆ¤æ–­
+        if (password == null || password.length() <8 || password.length()>30) return false;
+ 
+        int i = 0;
+ 
+        if (password.matches(ValidationUtils.REG_NUMBER)) i++;
+        if (password.matches(ValidationUtils.REG_LOWERCASE))i++;
+        if (password.matches(ValidationUtils.REG_UPPERCASE)) i++;
+        if (password.matches(ValidationUtils.REG_SYMBOL)) i++;
+ 
+        boolean contains = password.contains(username);
+ 
+        if (i  < 3 || contains)  return false;
+ 
+        return true;
+    }
+    
+    /**
+     * æ ¡éªŒæ‰‹æœºå·
+     * 
      * @param mobile
-     * @return Ğ£ÑéÍ¨¹ı·µ»Øtrue£¬·ñÔò·µ»Øfalse
+     * @return æ ¡éªŒé€šè¿‡è¿”å›trueï¼Œå¦åˆ™è¿”å›false
      */
     public static boolean isMobile(String mobile) {
         return Pattern.matches(REGEX_MOBILE, mobile);
     }
+	 
+    /**
+     * éªŒè¯é‚®ç®±
+     * @param email
+     * @return
+     */
+    public static boolean checkEmail(String email){
+        boolean flag = false;
+        try{
+                String check = "^([a-z0-9A-Z]+[-|_|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
+                Pattern regex = Pattern.compile(check);
+                Matcher matcher = regex.matcher(email);
+                flag = matcher.matches();
+            }catch(Exception e){
+                flag = false;
+            }
+        return flag;
+    }
+    
+    /**
+	 * éªŒè¯è½¦ç‰Œå·
+	 * @param vehicleNo
+	 * @return
+	 */
+	public static boolean validationVehicleNo(String vehicleNo) {
+		Pattern pattern = Pattern.compile("^[äº¬æ´¥æ²ªæ¸å†€è±«äº‘è¾½é»‘æ¹˜çš–é²æ–°è‹æµ™èµ£é„‚æ¡‚ç”˜æ™‹è’™é™•å‰é—½è´µç²¤é’è—å·å®ç¼ä½¿é¢†A-Z]{1}[A-Z]{1}(?:(?![A-Z]{4})[A-Z0-9]){4}[A-Z0-9æŒ‚å­¦è­¦æ¸¯æ¾³]{1}$");
+		Matcher matcher = pattern.matcher(vehicleNo);
+		if (!matcher.matches()) {
+			/*System.out.println("è½¦ç‰Œå·æ ¼å¼ä¸å¯¹ï¼");*/
+		return false;
+		}else{
+		    /*System.out.println("è½¦ç‰Œå·æ ¼å¼æ­£ç¡®ï¼");	*/
+		return true;
+	   }
+   }
 }

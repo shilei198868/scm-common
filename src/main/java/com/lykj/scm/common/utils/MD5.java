@@ -3,54 +3,61 @@ package com.lykj.scm.common.utils;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
+/**
+ * @version:v1.0.0
+ * @Description:(MD5 ç®—æ³•)
+ * @author:shilei
+ * @date:2020å¹´6æœˆ20æ—¥ ä¸‹åˆ3:47:31
+ */
 public class MD5 {
+	    // å…¨å±€æ•°ç»„
+	    private final static String[] strDigits = { "0", "1", "2", "3", "4", "5",
+	            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
 
-	// È«¾ÖÊı×é
-    private final static String[] strDigits = { "0", "1", "2", "3", "4", "5",
-            "6", "7", "8", "9", "a", "b", "c", "d", "e", "f" };
 
-    // ·µ»ØĞÎÊ½ÎªÊı×Ö¸ú×Ö·û´®
-    private static String byteToArrayString(byte bByte) {
-        int iRet = bByte;
-        // System.out.println("iRet="+iRet);
-        if (iRet < 0) {
-            iRet += 256;
-        }
-        int iD1 = iRet / 16;
-        int iD2 = iRet % 16;
-        return strDigits[iD1] + strDigits[iD2];
-    }
 
-    // ·µ»ØĞÎÊ½Ö»ÎªÊı×Ö
-    @SuppressWarnings("unused")
-	private static String byteToNum(byte bByte) {
-        int iRet = bByte;
-        System.out.println("iRet1=" + iRet);
-        if (iRet < 0) {
-            iRet += 256;
-        }
-        return String.valueOf(iRet);
-    }
+	    // è¿”å›å½¢å¼ä¸ºæ•°å­—è·Ÿå­—ç¬¦ä¸²
+	    private static String byteToArrayString(byte bByte) {
+	        int iRet = bByte;
+	        // System.out.println("iRet="+iRet);
+	        if (iRet < 0) {
+	            iRet += 256;
+	        }
+	        int iD1 = iRet / 16;
+	        int iD2 = iRet % 16;
+	        return strDigits[iD1] + strDigits[iD2];
+	    }
 
-    // ×ª»»×Ö½ÚÊı×éÎª16½øÖÆ×Ö´®
-    private static String byteToString(byte[] bByte) {
-        StringBuffer sBuffer = new StringBuffer();
-        for (int i = 0; i < bByte.length; i++) {
-            sBuffer.append(byteToArrayString(bByte[i]));
-        }
-        return sBuffer.toString();
-    }
+	    // è¿”å›å½¢å¼åªä¸ºæ•°å­—
+	    @SuppressWarnings("unused")
+		private static String byteToNum(byte bByte) {
+	        int iRet = bByte;
+	        System.out.println("iRet1=" + iRet);
+	        if (iRet < 0) {
+	            iRet += 256;
+	        }
+	        return String.valueOf(iRet);
+	    }
 
-    public static String GetMD5Code(String strObj) {
-        String resultString = null;
-        try {
-            resultString = new String(strObj);
-            MessageDigest md = MessageDigest.getInstance("MD5");
-            // md.digest() ¸Ãº¯Êı·µ»ØÖµÎª´æ·Å¹şÏ£Öµ½á¹ûµÄbyteÊı×é
-            resultString = byteToString(md.digest(strObj.getBytes()));
-        } catch (NoSuchAlgorithmException ex) {
-            ex.printStackTrace();
-        }
-        return resultString.toUpperCase();
-    }
+	    // è½¬æ¢å­—èŠ‚æ•°ç»„ä¸º16è¿›åˆ¶å­—ä¸²
+	    private static String byteToString(byte[] bByte) {
+	        StringBuffer sBuffer = new StringBuffer();
+	        for (int i = 0; i < bByte.length; i++) {
+	            sBuffer.append(byteToArrayString(bByte[i]));
+	        }
+	        return sBuffer.toString();
+	    }
+
+	    public static String GetMD5Code(String strObj) {
+	        String resultString = null;
+	        try {
+	            resultString = new String(strObj);
+	            MessageDigest md = MessageDigest.getInstance("MD5");
+	            // md.digest() è¯¥å‡½æ•°è¿”å›å€¼ä¸ºå­˜æ”¾å“ˆå¸Œå€¼ç»“æœçš„byteæ•°ç»„
+	            resultString = byteToString(md.digest(strObj.getBytes()));
+	        } catch (NoSuchAlgorithmException ex) {
+	            ex.printStackTrace();
+	        }
+	        return resultString.toUpperCase();
+	    }
 }
